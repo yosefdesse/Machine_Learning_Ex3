@@ -55,18 +55,12 @@ class KNN:
         return y_pred
 
     def predict_train(self):
-        
         y_pred = []
-        i = 0
-        while i != len(self.base):
-            indices = [j for j in range(len(self.base)) if j != i]
-            x_train = self.base[indices]
-            sample = self.base[i]
+        for i in range(len(self.base)):
             dist = []
-            for j in range(len(x_train)):
-                dist.append(self.p_distance(sample, x_train[j], self.p))
+            for j in range(len(self.base)):
+                dist.append(self.p_distance(self.base[i], self.base[j], self.p))
             y_pred.append(self.predict_label(dist))
-            i+=1
         return y_pred
         
 
