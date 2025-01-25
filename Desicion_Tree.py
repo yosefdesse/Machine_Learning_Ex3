@@ -50,7 +50,7 @@ class DecisionTreeBase:
         return guess_error*donate
 
 
-    def compute_tree_error(self, node):
+    def compute_tree_error(self, node): # Computes tree error (sum of all leaves errors)
     
         if not node.left_child and not node.right_child:
             return self.compute_leaf_error(node.val)
