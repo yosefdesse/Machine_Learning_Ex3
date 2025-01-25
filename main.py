@@ -1,6 +1,4 @@
 import numpy as np 
-from KNN import KNN
-import matplotlib.pyplot as plt
 from Desicion_Tree import DecisionTreeBruteForce, DecisionTreeEntropy
 from utils import write_from_file, plot_all_errors, run_knn_multiple_times, visualize_tree, prepare_desicion_tree_data
 
