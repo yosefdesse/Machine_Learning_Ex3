@@ -2,73 +2,74 @@ import numpy as np
 
 
 class KNN:
+    '''
+    K-Nearest Neighbors classifier. 
+    Uses a specified distance metric (p-norm) to classify data points.
+    '''
+
     def __init__(self, k, p):
         self.k = k
         self.p = p
 
-    def p_distance(self, point1, point2, p):
-        X = abs(point1[0]-point2[0])
-        Y = abs(point1[1]-point2[1])
-        if p==0:
-            if X > Y:
-                return X
-            else:
-                return Y
-
-        X = pow(X,p)
-        Y= pow(Y,p)
-        Z = X+Y
-        return pow(Z,1/p)    
-
     def init_base(self, train_data, train_label):
-        self.base = train_data 
-        self.base_label = train_label
+
+        self.base = train_data  # Store the training data
+        self.base_label = train_label  # Store the training labels
+
+    def p_distance(self, vector_a, vector_b, p):
+
+        # Ensure points have the same dimension
+        assert len(vector_a) == len(vector_b), "Vectors must have the same dimension."
+
+        if p == 0:
+            return np.sum([1 if vector_a[i] != vector_b[i] else 0 for i in range(len(vector_a))]) # Hamming distance
+
+        distance = sum(pow(abs(vector_a[i] - vector_b[i]), p) for i in range(len(vector_a)))
+
+        if np.isinf(p):
+            return max(abs(vector_a[i] - vector_b[i]) for i in range(len(vector_a)))  # Frechet distance
+        else:
+            return pow(distance, 1/p)
 
     def predict_label(self, dist):
+
         labels = []
-        for i in range(self.k):
-            idx = 0
-            min = dist[0]
-            for j in range(len(dist)):
-                if dist[j] < min:
-                    idx = j
-                    min = dist[j]
-            labels.append(self.base_label[idx])
-            del dist[idx]  
-        count0 = 0
-        count1 = 0
-        for i in range(len(labels)):
-            if labels[i] == 0:
-                count0 += 1
-            else:
-                count1 += 1
+
+        labels = []  
+        sorted_indices = np.argsort(dist)[:self.k]  # Get the indices of the k smallest distances (nearest neighbors)
         
-        return 1 if count1>count0 else 0       
+        # Collect the labels of the k nearest neighbors
+        for idx in sorted_indices:
+            labels.append(self.base_label[idx])
+
+        count0 = labels.count(0)
+        count1 = labels.count(1)
+
+        return 1 if count1 > count0 else 0
 
     def predict_test(self, test_data):
-        y_pred = []
+
+        y_pred = [] 
+     
         for i in range(len(test_data)):
-            dist = []
+            dist = [] 
             for j in range(len(self.base)):
-                dist.append(self.p_distance(test_data[i], self.base[j], self.p))
-            y_pred.append(self.predict_label(dist))
-        return y_pred
+                dist.append(self.p_distance(test_data[i], self.base[j], self.p))  # Compute distance to each training point
+            y_pred.append(self.predict_label(dist))  # Predict label based on nearest neighbors' labels
+        return y_pred 
 
     def predict_train(self):
-        y_pred = []
+
+        y_pred = [] 
+      
         for i in range(len(self.base)):
-            dist = []
+            dist = []  
             for j in range(len(self.base)):
-                dist.append(self.p_distance(self.base[i], self.base[j], self.p))
-            y_pred.append(self.predict_label(dist))
-        return y_pred
-        
-
-                
+                dist.append(self.p_distance(self.base[i], self.base[j], self.p))  # Compute distance to each other training point
+            y_pred.append(self.predict_label(dist))  # Predict label based on nearest neighbors' labels
+        return y_pred 
 
         
-
-
 
 
 
