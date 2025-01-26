@@ -37,20 +37,21 @@ def split_data(data1, data2):
     x_test = []
     y_train = []
     y_test = []
+    rng = np.random.default_rng()  # Creating a new random generator
     
     # Split data1 (class 0) using Bernoulli process
     for i in range(len(data1)):
-        result = np.random.binomial(1, 0.5)
+        result = rng.binomial(1, 0.5)  # Using a new generator
         if result == 0:
             x_train.append(data1[i])
-            y_train.append(0)  
+            y_train.append(0)   
         else:
             x_test.append(data1[i])
             y_test.append(0)
 
     # Split data2 (class 1) using Bernoulli process
     for i in range(len(data2)):
-        result = np.random.binomial(1, 0.5)
+        result = rng.binomial(1, 0.5)  # Using a new generator
         if result == 0:
             x_train.append(data2[i])
             y_train.append(1) 
@@ -62,7 +63,6 @@ def split_data(data1, data2):
     x_test = np.array(x_test)
     y_train = np.array(y_train)
     y_test = np.array(y_test)
-
     return x_train, x_test, y_train, y_test
 
 def plot_all_errors(empirical_errors, true_errors, k_values, p_value):

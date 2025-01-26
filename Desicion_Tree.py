@@ -72,7 +72,6 @@ class DecisionTreeBruteForce(DecisionTreeBase):
     Decision tree using brute force method. 
     Evaluates all possible splits to find the best tree structure.
     '''
-
     def build_tree_brute_force(self, node, depth=0): # Recursively builds the tree using brute force splits
         
         if depth >= self.max_depth or len(node.val) <= 1:
@@ -108,6 +107,10 @@ class DecisionTreeBruteForce(DecisionTreeBase):
                         all_trees.append(new_root)
 
         return all_trees
+    
+   
+
+
     
     def train(self): # Initializes the root and trains the tree using brute force
 

@@ -25,7 +25,7 @@ def main(data_txt):
             print(f'p : {p}, k : {k}, Average empirical Error = {avg_empirical_errors},  Average true Error = {avg_true_errors}, Difference = {diff}')
         
         print('\n')
-        plot_all_errors(all_empirical_errors, all_true_errors, k_values, p)
+       # plot_all_errors(all_empirical_errors, all_true_errors, k_values, p)
         if np.isinf(p) : p = 0
 
 # ----------------------- Run Desicion Tree -----------------------
